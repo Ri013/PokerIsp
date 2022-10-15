@@ -3,7 +3,7 @@ package Poker.play
 import Poker.cards.{Card, Dignity, Suits}
 import Poker.comb.Combination
 import Poker.comb.Combination._
-import Poker.play.testGame.{hand1, table}
+
 
 object Test extends App {
   val hand1 = Hand(Vector(

@@ -1,3 +1,4 @@
-[debug] not up to date. inChanged = true, force = false
-[debug] Updating ProjectRef(uri("file:/home/roman/IdeaProjects/Poker/"), "root")...
-[debug] Done updating ProjectRef(uri("file:/home/roman/IdeaProjects/Poker/"), "root")
+[warn] scala-library-2.13.9-sources.jar no longer exists at \home\roman\.var\app\com.jetbrains.IntelliJ-IDEA-Community\cache\coursier\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.13.9\scala-library-2.13.9-sources.jar
+[debug] not up to date. inChanged = false, force = false
+[debug] Updating ProjectRef(uri("file:/D:/Pok/PokerIsp/Poker/"), "root")...
+[debug] Done updating ProjectRef(uri("file:/D:/Pok/PokerIsp/Poker/"), "root")
