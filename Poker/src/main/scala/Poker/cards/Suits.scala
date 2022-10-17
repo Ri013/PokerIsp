@@ -1,15 +1,11 @@
 package Poker.cards
 
-import Poker.cards.Suits.prioritySuits
-
-case class Suits (name: String) {
-
-  val numberSuits = prioritySuits(name)
+sealed case class Suits (prioritySuits: Int) {
 
     def comparison(s2: Suits): Int = {
-      if (this.numberSuits > s2.numberSuits)
+      if (this.prioritySuits > s2.prioritySuits)
         1
-      else if (this.numberSuits < s2.numberSuits)
+      else if (this.prioritySuits < s2.prioritySuits)
         -1
       else 0
     }
@@ -27,15 +23,11 @@ case class Suits (name: String) {
   }
 }
 
-object Suits {
+case object Diamond extends Suits(1)
+case object Heart extends Suits(2)
+case object Club extends Suits(3)
+case object Spade extends Suits(4)
 
-  val prioritySuits = Map(
-    "Diamond" -> 1,
-    "Heart" -> 2,
-    "Club" -> 3,
-    "Spade" -> 4
-  )
-}
 
 
 

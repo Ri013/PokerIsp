@@ -1,10 +1,67 @@
 package Poker.comb
 
 import Poker.cards.{Card, Dignity, Suits}
-import Poker.comb.Combination.{combination, getHighCard, thisCare, thisFlush, thisFullHouse, thisPair, thisStraight, thisTwoPair, thisRoyalFlush, thisStraightFlush, thisTroika}
-import cats.data.Reader
+import Poker.comb.Combination.{getHighCard, ordDignity, thisCare, thisFlush, thisFullHouse, thisPair, thisRoyalFlush, thisStraight, thisStraightFlush, thisTroika, thisTwoPair}
 
 import scala.annotation.tailrec
+
+sealed case class CombinationCards(priorityCombination: Int)
+case object HighCard extends CombinationCards()
+case object Pair extends CombinationCards(15)
+case object TwoPair extends CombinationCards(16)
+case object Troika extends CombinationCards(17)
+case object Straight extends CombinationCards(18)
+case object Flush extends CombinationCards(19)
+case object FullHouse extends CombinationCards(20)
+case object Care extends CombinationCards(21)
+case object StraightFlush extends CombinationCards(22)
+case object RoyalFlush extends CombinationCards(23)
+
+trait CheckCombination{
+  def checkCombination(cards: Vector[Card]): Boolean
+}
+
+object CheckCombinationInstances{
+  @tailrec
+  private def algorithmCheck(cardPlayer: Int, numberCardComb: Int)(list: Vector[Card])
+                              (f1: (Int, Int, Vector[Card]) => Boolean)(f2: (Int, Int, Vector[Card]) => Boolean): Boolean = {
+    if (cardPlayer < list.length) {
+      list(cardPlayer) match {
+        case c if (f1(numberCardComb, cardPlayer, list)) => true
+        case c if (f2(numberCardComb, cardPlayer, list)) => algorithmCheck(cardPlayer + 1, numberCardComb + 1)(list)(f1)(f2)
+        case c  => algorithmCheck(cardPlayer + 1,0)(list)(f1)(f2)
+      }
+    }
+    else false
+  }
+
+  implicit val pair: CheckCombination = new CheckCombination {
+    override def checkCombination(cards: Vector[Card]): Boolean = {
+      @tailrec
+      def examination(n: Int)(counter: Int)(v: Vector[Card]): Boolean = {
+        if (n >= 0) {
+          v(n) match {
+            case c if (n != 0 && v(n - 1).dignity == c.dignity && counter == 1) => true
+            case c if (n != 0 && v(n - 1).dignity == c.dignity) => examination(n - 2)(counter + 1)(v)
+            case c if (n == 0) => false
+            case c => examination(n - 1)(counter)(v)
+          }
+        }
+        else false
+      }
+      examination(cards.length - 1)(0)(cards.sorted(ordDignity))
+    }
+  }
+}
+
+object Check {
+
+  implicit  class CheckCombinationCards(cards: Vector[Card]) {
+    def combination(implicit w: CheckCombination): Boolean =
+      w.checkCombination(cards)
+  }
+}
+
 
 case class Combination(cardsPlayer: Vector[Card]){
 
